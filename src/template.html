@@ -8,6 +8,57 @@
     <title>Battleship</title>
 </head>
 <body>
+  <div class="game-container">
+    <header class="game-header">
+      <h1>Battleship</h1>
+      <div class="game-info">
+        <div class="turn-indicator" id="turnIndicator">Your Turn</div>
+        <div class="game-status" id="gameStatus">Place your ships to start</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="board-section">
+        <h2>Your Fleet</h2>
+        <div class="board-container">
+          <div class="board" id="playerBoard"></div>
+          <div class="ship-status" id="playerShipStatus"></div>
+        </div>
+      </section>
+
+      <section class="board-section">
+        <h2>Enemy Waters</h2>
+        <div class="board-container">
+          <div class="board" id="computerBoard"></div>
+          <div class="ship-status" id="computerShipStatus"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="game-control">
+      <div class="ship-placement" id="shipPlacement">
+        <h3>Place Your Ships</h3>
+        <div class="ship-list" id="shipList"></div>
+        <div class="placement-controls">
+          <button id="rotateBtn">Rotate Ship</button>
+          <button id="randomBtn">Randomize All</button>
+        </div>
+      </div>
+
+      <div class="game-buttuns">
+        <button id="startBtn">Start Game</button>
+        <button id="resertBtn">Reset Game</button>
+      </div>
+    </footer>
+  </div>
+
+  <div class="modal" id="gameOverModal">
+    <div class="modal-content">
+      <h2 id="modalTitle">Game Over</h2>
+      <p id="modalMessage"></p>
+      <button id="playAgainBtn">PLay Again</button>
+    </div>
+  </div>
 
 </body>
 </html>
