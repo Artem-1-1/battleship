@@ -78,7 +78,7 @@ export default class DOM {
     })
   }
 
-  selectShip() {
+  selectShip(ship) {
     if (this.placeShips.has(ship.name)) {
       this.showAttackFeedback('Ship already placed!', '✅');
       return;
@@ -138,7 +138,7 @@ export default class DOM {
         }
 
         cell.addEventListener('click', (e) => {
-          this.placeShips(x, y);
+          this.placeShip(x, y);
         });
         this.playerBoard.appendChild(cell);
       }
@@ -200,7 +200,7 @@ export default class DOM {
     
     for (const [ship, coordinates] of gameboard.shipPositions) {
       for (const [shipX, shipY] of coordinates) {
-        if (shipX === x && shipY === shipY) {
+        if (shipX === x && shipY === y) {
           return ship;
         }
       }
@@ -233,7 +233,7 @@ export default class DOM {
 
       this.placeShips.add(this.currentShip.name);
       this.showAttackFeedback(`${this.currentShip.name} placed!`, '✅');
-      this.renderBoards;
+      this.renderBoards();
 
       if (this.placeShips.size === 5) {
         this.startBtn.disabled = false;
@@ -243,7 +243,7 @@ export default class DOM {
       }
 
       const nextShip = Array.from(document.querySelectorAll('.ship-item'))
-        .find(item => !this.placedShips.has(item.dataset.name));
+        .find(item => !this.placeShips.has(item.dataset.name));
 
       if (nextShip) {
         this.selectShip({
@@ -260,7 +260,7 @@ export default class DOM {
 
   randomizeShips() {
     this.game.players.human.gameboard.ships = [];
-    this.players.human.gameboard.shipPositions = new Map();
+    this.game.players.human.gameboard.shipPositions = new Map();
     this.game.players.human.gameboard.allCoordinates = new Set();
     this.placeShips.clear();
 
@@ -285,7 +285,7 @@ export default class DOM {
         const direction = Math.random() > 0.5 ? 'horizontal' : 'vertical';
 
         try {
-          this.players.human.gameboard.placeShip(ship.length, [x, y], direction);
+          this.game.players.human.gameboard.placeShip(ship.length, [x, y], direction);
           this.placeShips.add(ship.name);
           placed = true;
           successfulPlacements++;
@@ -297,7 +297,7 @@ export default class DOM {
         }
       }
     });
-    
+
     this.renderPlayerBoard();
 
     if (successfulPlacements === 5) {
@@ -313,7 +313,7 @@ export default class DOM {
     }
   }
 
-  attackComputer() {
+  attackComputer(x, y) {
     if (this.game.gameOver) {
       this.showGameOver(this.game.winner);
       return;
@@ -451,8 +451,8 @@ export default class DOM {
     if (this.placeShips.size < 5) {
       this.gameStatus.textContent = 'Place all 5 ships before starting!';
       this.gameStatus.className = 'game-status defeat';
-      console.log('Not all ships placed:', this.placedShips.size);
-      this.showAttackFeedback(`Place all 5 ships! (${this.placedShips.size}/5)`, '❌');
+      console.log('Not all ships placed:', this.placeShips.size);
+      this.showAttackFeedback(`Place all 5 ships! (${this.placeShips.size}/5)`, '❌');
       return;
     }
 
@@ -475,7 +475,7 @@ export default class DOM {
     this.game = new (this.game.constructor)();
     this.currentShip = null;
     this.currentDirection = 'horizontal';
-    this.placedShips.clear();
+    this.placeShips.clear();
 
     if (this.modal) this.modal.classList.remove('show');
     if (this.startBtn) {
@@ -485,7 +485,7 @@ export default class DOM {
     if (this.rotateBtn) this.rotateBtn.textContent = 'Rotate Ship ';
 
     this.createShipList();
-    this.renderBoards;
+    this.renderBoards();
 
     if (this.gameStatus) {
       this.gameStatus.textContent = 'Place your ships to start';
@@ -499,7 +499,7 @@ export default class DOM {
     this.showAttackFeedback('Game Reset!', '🔄');
   }
 
-  showGameOver() {
+  showGameOver(winner) {
     if (winner === 'human') {
       document.body.classList.add('victory-celebration');
       this.showAttackFeedback('VICTORY! All enemy ships destroyed!', '🎉');

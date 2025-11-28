@@ -67,7 +67,7 @@ export default class Game {
     if (!attack) {
       this.checkGameOver();
       if (!this.gameOver) {
-        this.switchTurn;
+        this.switchTurn();
       }
       return { error: 'No valid attacks remaining' };
     }

@@ -33,7 +33,7 @@ export default class Gameboard {
       coordinates.push([x, y]);
 
       for (let dx = -1; dx <= 1; dx++) {
-        for (let dy = -1; dy <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
           const checkX = x + dx;
           const checkY = y + dy;
           if (checkX >= 0 && checkX <= 9 && checkY >= 0 && checkY <= 9) {
@@ -49,7 +49,7 @@ export default class Gameboard {
       }
     }
 
-    const ship = new Ship();
+    const ship = new Ship(length);
     this.ships.push(ship);
     this.shipPositions.set(ship, coordinates);
 
